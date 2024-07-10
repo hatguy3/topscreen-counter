@@ -38,14 +38,14 @@ def set_appbar(hwnd):
     ctypes.windll.shell32.SHAppBarMessage(ABM_NEW, ctypes.byref(abd))
     ctypes.windll.shell32.SHAppBarMessage(ABM_SETPOS, ctypes.byref(abd))
 
-def update_timer():
+def update_counter():
     while True:
         now = datetime.now()
         elapsed = now - start_time
         days, remainder = divmod(elapsed.total_seconds(), 86400)
         hours, remainder = divmod(remainder, 3600)
         minutes, seconds = divmod(remainder, 60)
-        timer_label.config(text=f"{int(days):02}:{int(hours):02}:{int(minutes):02}:{int(seconds):02}")
+        counter_label.config(text=f"{int(days):02}:{int(hours):02}:{int(minutes):02}:{int(seconds):02}")
         root.update_idletasks()
         time.sleep(1)
 
@@ -63,7 +63,7 @@ def on_quit(icon, item):
 def setup_tray_icon():
     icon_image = create_image()
     menu = (item('Settings', lambda: root.after(0, open_settings)), item('Quit', on_quit))
-    icon = pystray.Icon("accountability_timer", icon_image, title_text, menu)
+    icon = pystray.Icon("accountability_counter", icon_image, title_text, menu)
     icon.run()
 
 def save_settings():
@@ -108,7 +108,7 @@ def open_settings():
 
     tk.Button(settings_window, text="OK", command=save_and_close).pack(pady=10)
 
-lock_file_path = os.path.expanduser("~/.top_screen_timer.lock")
+lock_file_path = os.path.expanduser("~/.top_screen_counter.lock")
 lock_file = open(lock_file_path, "w")
 try:
     import portalocker
@@ -127,16 +127,16 @@ root.attributes("-topmost", True)
 hwnd = root.winfo_id()
 set_appbar(hwnd)
 
-timer_frame = tk.Frame(root, bg='black')
-timer_frame.pack(fill='both', expand=True)
+counter_frame = tk.Frame(root, bg='black')
+counter_frame.pack(fill='both', expand=True)
 
-timer_label = tk.Label(timer_frame, font=("Helvetica", 8), bg="black", fg="red")
-timer_label.pack(side='left', padx=5)
+counter_label = tk.Label(counter_frame, font=("Helvetica", 8), bg="black", fg="red")
+counter_label.pack(side='left', padx=5)
 
-text_label = tk.Label(timer_frame, text=title_text, font=("Helvetica", 8), bg="black", fg="white")
+text_label = tk.Label(counter_frame, text=title_text, font=("Helvetica", 8), bg="black", fg="white")
 text_label.pack(side='left', padx=5)
 
-threading.Thread(target=update_timer, daemon=True).start()
+threading.Thread(target=update_counter, daemon=True).start()
 threading.Thread(target=setup_tray_icon, daemon=True).start()
 
 root.mainloop()

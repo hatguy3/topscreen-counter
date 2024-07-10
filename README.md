@@ -1,6 +1,6 @@
 # Top Screen Counter
 
-A simple counter application that displays a counter on top of the screen.
+A simple timer application that displays a counter on top of the screen.
 
 ## Usage
 
@@ -13,11 +13,9 @@ To build the executable using `PyInstaller`, run the following command:
 ```bash
 pyinstaller --onefile --windowed topscreen-counter.py
 ```
+
 ## Automate for startup
 
-Create shortcut for executable `topscreen-counter.exe`
+Create shortcut for executable `topscreen-counter.exe` 
 
-Move shortcut to shell:start
-
-
-
+Move shortcut into shell:startup
